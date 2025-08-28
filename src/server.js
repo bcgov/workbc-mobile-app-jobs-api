@@ -14,9 +14,9 @@ var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8081,
 
 app.use(
   helmet.hsts({
-    maxAge: 31536000, // 1 year in seconds
-    includeSubDomains: true, // applies to all subdomains
-    preload: true // for HSTS preload list (optional)
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true
   })
 );
 app.use('/jobs', jobRouter);

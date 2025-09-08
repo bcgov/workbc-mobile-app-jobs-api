@@ -12,6 +12,13 @@ app.use(cors());
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8081,
   ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 
+app.use(
+  helmet.hsts({
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true
+  })
+);
 app.use(helmet.frameguard({ action: "DENY"}));
 app.use('/jobs', jobRouter);
 

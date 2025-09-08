@@ -12,6 +12,17 @@ app.use(cors());
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8081,
   ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 
+app.use(helmet());
+app.use('/jobs', (req) => {
+  const baseDomain = req.get("host");
+  const protocol = req.protocol;
+  console.log('Base Domain:', `${protocol}://${baseDomain}`);
+  helmet.contentSecurityPolicy({
+    "default-src": ["'self'"],
+    "script-src": ["'self'",],
+    "content-src": ["'self'", `${protocol}://${baseDomain}`],
+  })
+}, jobRouter)
 app.use(
   helmet.hsts({
     maxAge: 31536000,

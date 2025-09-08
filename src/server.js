@@ -19,6 +19,7 @@ app.use(
     preload: true
   })
 );
+app.use(helmet.frameguard({ action: "DENY"}));
 app.use('/jobs', jobRouter);
 
 app.get('/', function (req, res) {

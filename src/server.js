@@ -1,5 +1,6 @@
 var express = require('express');
 var cors = require('cors');
+var helmet = require('helmet');
 var app = express();
 require('dotenv').config();
 var jobRouter = require('./routes/jobs.route');
@@ -11,6 +12,7 @@ app.use(cors());
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8081,
   ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 
+app.use(helmet.frameguard({ action: "DENY"}));
 app.use('/jobs', jobRouter);
 
 app.get('/', function (req, res) {

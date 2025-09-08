@@ -23,6 +23,15 @@ app.use('/jobs', (req) => {
     "content-src": ["'self'", `${protocol}://${baseDomain}`],
   })
 }, jobRouter)
+app.use(
+  helmet.hsts({
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true
+  })
+);
+app.use(helmet.frameguard({ action: "DENY"}));
+app.use('/jobs', jobRouter);
 
 app.get('/', function (req, res) {
   res.send("WORKBC-JOBS-API: Server is Running.");

@@ -63,6 +63,9 @@ exports.GetJobDetails = async (req, res) => {
   console.log(req.body);
   try {
     const jobDetails = await jobService.GetJobDetails(req.body.jobID, req.body.language);
+    if (Array.isArray(jobDetails.PeriodOfEmployment.Description) && jobDetails.PeriodOfEmployment.Description.length === 0) {
+      return res.status(200).json({ ...jobDetails, PeriodOfEmployment: null});
+    }
 
     return res.status(200).json(jobDetails);
 

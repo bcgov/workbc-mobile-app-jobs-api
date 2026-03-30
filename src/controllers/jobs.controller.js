@@ -10,11 +10,10 @@ exports.GetJobs = async (req, res) => {
 
     return res.status(200).json({
       count: jobs.count,
-      jobs: jobs.result
+      jobs: jobs.result,
     });
-
   } catch (err) {
-      return res.status(500).send("Internal Server Error");
+    return res.status(500).send("Internal Server Error");
   }
 };
 
@@ -26,9 +25,7 @@ exports.TotalJobs = async (req, res) => {
   try {
     var jobsCount = await jobService.TotalJobs();
     return res.status(200).json({ count: jobsCount });
-  }
-
-  catch (err) {
+  } catch (err) {
     console.log(err);
     return res.status(500).send("Internal server error");
   }
@@ -36,23 +33,24 @@ exports.TotalJobs = async (req, res) => {
 
 // GET Search Jobs //
 exports.SearchJobs = async (req, res) => {
-  console.log("GET request received to " + req.get("host") + req.originalUrl)
-  console.log("request body: ")
-  console.log(req.body)
+  console.log("GET request received to " + req.get("host") + req.originalUrl);
+  console.log("request body: ");
+  console.log(req.body);
   try {
-    const jobs = await jobService.SearchJobs(req.body)
+    const jobs = await jobService.SearchJobs(req.body);
     return res.status(200).json({
       count: jobs.count,
       jobs: jobs.result,
-      new: jobs.result.reduce( // counts the number of new jobs
+      new: jobs.result.reduce(
+        // counts the number of new jobs
         (previousValue, currentValue) => {
-            return previousValue + (currentValue.IsNew ? 1 : 0)
-        }, 0
-      ) 
-    })
-
+          return previousValue + (currentValue.IsNew ? 1 : 0);
+        },
+        0,
+      ),
+    });
   } catch (err) {
-      return res.status(500).send("Internal Server Error")
+    return res.status(500).send("Internal Server Error");
   }
 };
 
@@ -62,15 +60,20 @@ exports.GetJobDetails = async (req, res) => {
   console.log("request body: ");
   console.log(req.body);
   try {
-    const jobDetails = await jobService.GetJobDetails(req.body.jobID, req.body.language);
+    
+    const jobDetails = await jobService.GetJobDetails(
+      req.body.jobID,
+      req.body.language,
+    );
+
     if (Array.isArray(jobDetails.PeriodOfEmployment.Description) && jobDetails.PeriodOfEmployment.Description.length === 0) {
       return res.status(200).json({ ...jobDetails, PeriodOfEmployment: null});
     }
 
+    console.log("[controller] jobDetails response: ", jobDetails);
     return res.status(200).json(jobDetails);
-
   } catch (err) {
-      return res.status(500).send("Internal Server Error");
+    return res.status(500).send("Internal Server Error");
   }
 };
 
@@ -83,8 +86,7 @@ exports.SearchCities = async (req, res) => {
     const searchResult = await jobService.SearchCities(req.body.searchTerm);
 
     return res.status(200).json(searchResult);
-
   } catch (err) {
-      return res.status(500).send("Internal Server Error");
+    return res.status(500).send("Internal Server Error");
   }
 };

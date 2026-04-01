@@ -66,8 +66,12 @@ exports.GetJobDetails = async (req, res) => {
       req.body.language,
     );
 
-    if (Array.isArray(jobDetails.PeriodOfEmployment.Description) && jobDetails.PeriodOfEmployment.Description.length === 0) {
-      return res.status(200).json({ ...jobDetails, PeriodOfEmployment: null});
+    if (Array.isArray(jobDetails.PeriodOfEmployment?.Description) && jobDetails.PeriodOfEmployment.Description.length === 0) {
+      jobDetails.PeriodOfEmployment = null;
+    }
+
+    if (Array.isArray(jobDetails.HoursOfWork?.Description) && jobDetails.HoursOfWork.Description.length === 0) {
+      jobDetails.HoursOfWork.Description.push(req.body.language === 'fr' ? 'Non spécifié' : 'Not specified');
     }
 
     console.log("[controller] jobDetails response: ", jobDetails);

@@ -35,7 +35,7 @@ objects:
         - image: ${NAME}:${TAG}
           name: workbc-jobs-api
           ports:
-          - containerPort: 8000
+          - containerPort: 8081
             protocol: TCP
           resources:
             requests:
